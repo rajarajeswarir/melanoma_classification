@@ -1,1 +1,4 @@
 raw_data/
+.python-version
+melanoma_cancer_dataset/
+raw_data_preproc/
