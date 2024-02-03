@@ -1,3 +1,4 @@
+.DS_Store
 .gitignore
 Makefile
 README.md
@@ -12,6 +13,8 @@ melanoma_classification.egg-info/SOURCES.txt
 melanoma_classification.egg-info/dependency_links.txt
 melanoma_classification.egg-info/not-zip-safe
 melanoma_classification.egg-info/top_level.txt
+melanoma_classification/__pycache__/__init__.cpython-310.pyc
+melanoma_classification/__pycache__/params.cpython-310.pyc
 melanoma_classification/interface/__init__.py
 melanoma_classification/interface/main_local.py
 melanoma_classification/ml_logic/__init__.py
@@ -19,5 +22,9 @@ melanoma_classification/ml_logic/data.py
 melanoma_classification/ml_logic/model.py
 melanoma_classification/ml_logic/preprocessor.py
 melanoma_classification/ml_logic/registry.py
+melanoma_classification/ml_logic/__pycache__/__init__.cpython-310.pyc
+melanoma_classification/ml_logic/__pycache__/data.cpython-310.pyc
+melanoma_classification/ml_logic/__pycache__/model.cpython-310.pyc
+melanoma_classification/ml_logic/__pycache__/preprocessor.cpython-310.pyc
 notebooks/melanoma_notebook.ipynb
 tests/__init__.py

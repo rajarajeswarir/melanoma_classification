@@ -5,6 +5,10 @@ and training logic.
 from colorama import Fore, Style
 import time
 import matplotlib.pyplot as plt
+from melanoma_classification.ml_logic.registry import load_model
+from melanoma_classification.ml_logic.preprocessor import preprocess_img
+import cv2
+import numpy as np
 
 # Timing the TF import
 
@@ -64,13 +68,13 @@ def train_model(model: Model,
                 X_val, y_val,
                 epochs=10,
                 batch_size=32,
-                callbacks=[],
+                patience=2,
                 verbose=1) -> Model:
     """
     Train the Neural Network
     """
     es = EarlyStopping(monitor='val_accuracy',
-                       mode='max', patience=2,
+                       mode='max', patience=patience,
                        restore_best_weights=True)
 
 
@@ -83,6 +87,8 @@ def train_model(model: Model,
 
     print(f"✅ Model trained on {len(X_train)} images")
     print(f"✅ Model validation accuracy: {round(history.history['val_accuracy'][-1], 2)}")
+
+
 
     return model, history
 
@@ -97,6 +103,25 @@ def evaluate_model(model: Model,
     print(f"✅ Model test accuracy: {round(accuracy, 2)}")
 
     return loss, accuracy
+
+def predict_results(image_path) -> tuple:
+    """
+    Predict the results on the test set
+    """
+    model = load_model()
+    print(model.summary())
+    print(f"✅ Model loaded from disk")
+
+    img = preprocess_img(image_path)
+    print(f"✅ Image preprocessed with the shape of {img.shape}")
+    img = np.expand_dims(img, axis=0)
+    print(f"✅ Image dims extended with the shape of {img.shape}")
+
+    results = model.predict(img, verbose=1)
+
+    print(f"✅ Model test results: {results}")
+
+    return results
 
 def plot_history(history, title='', axs=None, exp_name=""):
     if axs is not None:
