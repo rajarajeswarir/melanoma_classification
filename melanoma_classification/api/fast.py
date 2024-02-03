@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from io import BytesIO
 import cv2
+import os
 
 
 from melanoma_classification.ml_logic.model import load_model, predict_results
@@ -39,9 +40,12 @@ async def predict(
 
         image_data = await image.read()
         im_data = Image.open(BytesIO(image_data))
+        # im_data = cv2.imread(image.file.read())
         im_type = type(im_data)
+        test_file_path = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction'
+        im_data.save(os.path.join(test_file_path, 'test_file.jpeg'))
 
-        results = predict_results(im_data)
+        results = predict_results('/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction/test_file.jpeg')
 
         outcome = {'malignant_probability': float(results[0][1]),
                 'benign_probability': float(results[0][0])}
@@ -63,12 +67,12 @@ async def predict(
         raise HTTPException(status_code=422, detail="Image file is required")
 
     # Return the prediction in the specified JSON format
-    '''return {'file_name': file_name,
-            'file_size': file_size,
-            'file_type': file_type,
-            'data_type': str(data_type),
-            'im_type': str(im_type)
-            }'''
+    # return {'file_name': file_name,
+    #         'file_size': file_size,
+    #         'file_type': file_type,
+    #         'data_type': str(data_type),
+    #         'im_type': str(im_type)
+    #         }
     return {'outcome': outcome}
 
 @app.get("/")

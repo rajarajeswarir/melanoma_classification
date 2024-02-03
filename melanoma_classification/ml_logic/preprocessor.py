@@ -54,4 +54,5 @@ def preprocess_img(img_path) -> np.ndarray:
 
     except Exception as e:
         pass  # in case of a problem, skip this image
+
     return img_array / 255.
