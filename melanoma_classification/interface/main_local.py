@@ -59,7 +59,7 @@ if __name__ == "__main__":
     '''
 
     print(Fore.BLUE + "\nPredicting model..." + Style.RESET_ALL)
-    image_path = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction/melanoma_10113.jpg'
+    image_path = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction/test_file.jpeg'
     results = predict_results(image_path)
 
     print(results)
