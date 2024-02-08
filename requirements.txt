@@ -1,0 +1,29 @@
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+# Basic packages
+numpy
+pandas
+jupyter
+matplotlib
+Pillow
+scikit-learn
+tqdm
+colorama
+
+
+#Opencv library for handling images
+opencv-python
+
+# API
+fastapi         # API framework
+pytz            # time zone management
+uvicorn         # web server
+python-multipart
+
+# tests
+httpx           # HTTP client
+pytest-asyncio  # asynchronous I/O support for pytest
