@@ -10,9 +10,11 @@ BQ_REGION = "EU" # TO COMPLETE
 MODEL_TARGET = "local" # ["local", "gcp"]
 DATA_SOURCE = "local" # ["local", "gcp"]
 GCP_BUCKET_NAME = "sumitkamra20-melanoma-images" # TO COMPLETE
+
+IMAGE=melanoma_classification
 ##################  CONSTANTS  #####################
 
 LOCAL_DATA_PATH = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/melanoma_cancer_dataset'
-LOCAL_REGISTRY_PATH =  "/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/training_outputs"
+LOCAL_REGISTRY_PATH =  "/home/raji/code/rajarajeswarir/melanoma_cancer_classification/training_outputs"
 
 # LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "training_outputs")
