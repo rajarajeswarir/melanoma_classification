@@ -44,7 +44,7 @@ def save_model(model: keras.Model = None) -> None:
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"size_{DATA_SIZE}_{timestamp}.h5")
     model.save(model_path)
 
     print("✅ Model saved locally")
@@ -78,3 +78,7 @@ def load_model(stage="Production") -> keras.Model:
         print("✅ Model loaded from local disk")
 
         return latest_model
+
+def load_this_model(mod):
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", mod)
+    return keras.models.load_model(model_path)

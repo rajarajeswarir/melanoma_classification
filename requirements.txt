@@ -13,6 +13,7 @@ Pillow
 scikit-learn
 tqdm
 colorama
+tensorflow
 
 
 #Opencv library for handling images

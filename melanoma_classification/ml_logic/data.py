@@ -13,7 +13,32 @@ from tqdm import tqdm  # for progress bar
 from melanoma_classification.params import *
 from tensorflow.keras.utils import to_categorical
 
-def load_images_and_labels(directory) -> (np.ndarray, np.ndarray):
+def load_test_images_resnet(directory):
+    '''
+    Load images from a directory
+    and return them as numpy unshuffled arrays.
+    '''
+
+    X = []
+    y = []
+
+    for label in ['malignant', 'benign']:
+        path = os.path.join(directory, label)
+        class_num = 1 if label == 'malignant' else 0
+
+        for img in tqdm(os.listdir(path)):
+            try:
+                img_array = cv2.imread(os.path.join(path, img))
+                img_array = cv2.resize(img_array, (256, 256))  # Resize images
+                X.append(img_array)
+                y.append(class_num)
+            except Exception as e:
+                pass  # in case of a problem, skip this image
+    y = to_categorical(np.array(y))
+
+    return np.array(X), y
+
+def load_images_and_labels(directory):
     '''
     Load images and labels from a directory
     and return them as numpy unshuffledz arrays.
@@ -75,7 +100,28 @@ def load_and_save_images(data_source=DATA_SOURCE):
     np.save(os.path.join(train_test_data_path, "X_test.npy"), X_test)
     np.save(os.path.join(train_test_data_path, "y_test.npy"), y_test)
 
-def load_data(data_size = DATA_SIZE) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray):
+def load_and_save_resnet_test():
+    '''
+    Load the test image data for resnet model in npy format to disk for later use.
+    '''
+    data_path = LOCAL_DATA_PATH
+    test_dir = os.path.join(data_path, 'test')
+
+    X_test_res, y_test_res = load_test_images_resnet(test_dir)
+
+    # Shuffle the data
+    np.random.seed(42)
+    test_shuffle = np.random.permutation(len(X_test_res))
+    X_test_res = X_test_res[test_shuffle]
+    y_test_res = y_test_res[test_shuffle]
+
+    # Save the data
+    train_test_data_path = os.path.join(LOCAL_DATA_PATH, 'train_test_data')
+    os.makedirs(train_test_data_path, exist_ok=True)
+    np.save(os.path.join(train_test_data_path, "X_test_resnet.npy"), X_test_res)
+    np.save(os.path.join(train_test_data_path, "y_test_resnet.npy"), y_test_res)
+
+def load_data(data_size = DATA_SIZE):
     '''
     Load the data from the npy files and return them.
     '''
@@ -88,16 +134,30 @@ def load_data(data_size = DATA_SIZE) -> (np.ndarray, np.ndarray, np.ndarray, np.
     if data_size == "500":
         X_train = X_train[:500]
         y_train = y_train[:500]
-        X_test = X_test[:500]
-        y_test = y_test[:500]
     elif data_size == "1k":
         X_train = X_train[:1000]
         y_train = y_train[:1000]
-        X_test = X_test[:1000]
-        y_test = y_test[:1000]
+    elif data_size == "2k":
+        X_train = X_train[:2000]
+        y_train = y_train[:2000]
     elif data_size == "all":
         pass
     else:
-        raise ValueError("data_size must be either '500', '1k' or 'all'")
+        raise ValueError("data_size must be either '500', '1k', '2k' or 'all'")
 
     return X_train, y_train, X_test, y_test
+
+def load_test_data(resnet=False):
+    '''
+    Load the test data from the npy files and return them.
+    '''
+    train_test_data_path = os.path.join(LOCAL_DATA_PATH, 'train_test_data')
+
+    if resnet:
+        X_test = np.load(os.path.join(train_test_data_path, "X_test_resnet.npy"))
+        y_test = np.load(os.path.join(train_test_data_path, "y_test_resnet.npy"))
+    else:
+        X_test = np.load(os.path.join(train_test_data_path, "X_test.npy"))
+        y_test = np.load(os.path.join(train_test_data_path, "y_test.npy"))
+
+    return X_test, y_test
