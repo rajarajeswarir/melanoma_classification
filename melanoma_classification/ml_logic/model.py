@@ -5,7 +5,7 @@ and training logic.
 from colorama import Fore, Style
 import time
 import matplotlib.pyplot as plt
-from melanoma_classification.ml_logic.registry import load_model
+from melanoma_classification.ml_logic.registry import load_model, load_this_model
 from melanoma_classification.ml_logic.preprocessor import preprocess_img
 import cv2
 import numpy as np
@@ -108,7 +108,7 @@ def predict_results(image_path) -> tuple:
     """
     Predict the results on the test set
     """
-    model = load_model()
+    model = load_this_model("all_20240212-115256.h5")
     print(model.summary())
     print(f"✅ Model loaded from disk")
 

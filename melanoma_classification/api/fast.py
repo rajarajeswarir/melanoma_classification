@@ -8,6 +8,8 @@ from PIL import Image
 from io import BytesIO
 import cv2
 import os
+import numpy as np
+from melanoma_classification.ml_logic.model import load_this_model
 
 
 from melanoma_classification.ml_logic.model import load_model, predict_results
@@ -41,11 +43,19 @@ async def predict(
         image_data = await image.read()
         im_data = Image.open(BytesIO(image_data))
         # im_data = cv2.imread(image.file.read())
-        im_type = type(im_data)
-        test_file_path = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction'
-        im_data.save(os.path.join(test_file_path, 'test_file.jpeg'))
 
-        results = predict_results('/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction/test_file.jpeg')
+        # test_file_path = '/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction'
+        # im_data.save(os.path.join(test_file_path, 'test_file.jpeg'))
+
+        img_array = np.array(im_data)
+        img_array = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+
+        img_array = cv2.resize(img_array, (224, 224)) / 255.
+        img_array = np.expand_dims(img_array, axis=0)
+        model = load_this_model("all_20240212-115256.h5")
+        results = model.predict(img_array, verbose=1)
+
+        # results = predict_results('/Users/sumitkamra/code/rajarajeswarir/melanoma_classification/image_for_prediction/test_file.jpeg')
 
         outcome = {'malignant_probability': float(results[0][1]),
                 'benign_probability': float(results[0][0])}
